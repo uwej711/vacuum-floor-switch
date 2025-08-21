@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Vacuum floor switcher</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="mt-5">Floor switcher</h1>
+            <p>Select the floor you want the robot run on.</p>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <button id="upper" class="btn btn-primary">Upper</button>
+                </div>
+                <div class="col-xs-12">
+                    <button id="lower" class="btn btn-primary">Lower</button>
+                </div>
+            </div>
+            <p id="response">foo</p>
+        </div>
+        <script type="text/javascript">
+            const switchFloor = async (floor) => {
+                const response = await fetch("/floor", {
+                    method: "PUT",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({floor: floor}),
+                });
+                const text = await response.text()
+                document.getElementById("response").innerHTML = text
+            }
+            document.getElementById("upper").addEventListener('click', () => switchFloor("upper"))
+            document.getElementById("lower").addEventListener('click', () => switchFloor("lower"))
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    </body>
+</html>
